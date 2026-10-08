@@ -359,4 +359,3 @@ Data Analyst | SQL | Python | Power BI | Data Engineering
 * Revenue analytics
 * Power BI dashboard preparation
 * End-to-end ETL/data pipeline development
-0000000
