@@ -8,7 +8,7 @@ The project combines **SQL, Python, Pandas, Regular Expressions, data reconcilia
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 
 The CFO of a FinTech company requires a Q1–Q4 Financial Audit Dashboard. However, the required information is distributed across three different systems:
 
@@ -30,7 +30,7 @@ The objective was to build a Python-based data pipeline that could:
 
 ---
 
-# 🎯 Business Problem
+#  Business Problem
 
 The source systems contain inconsistent, historical, and partially unstructured data.
 
@@ -47,29 +47,24 @@ Therefore, the project focuses on building a **reliable and reproducible financi
 
 ---
 
-# 💡 Solution
+#  Solution
 
 The project implements a five-phase data pipeline.
 
 ### Phase 1 — SQL User Extraction
 
 SQLite is used to identify the most recent status for every user.
-
 A SQL window function ranks records by:
 
-```sql
 ROW_NUMBER() OVER (
     PARTITION BY user_id
     ORDER BY updated_at DESC
 )
-```
+
 
 Only records where:
 
-```text
-rn = 1
-AND status = 'Active'
-```
+rn = 1 AND status = 'Active'
 
 are retained.
 
@@ -86,12 +81,10 @@ The pipeline:
 3. Uses Regex with Pandas `.str.extract()`.
 4. Extracts:
 
-```text
 Date
 User_ID
 Product_ID
 Euro_Value
-```
 
 This converts the unstructured log data into structured tabular data.
 
@@ -107,14 +100,9 @@ The pipeline:
 2. Sorts the exchange-rate data chronologically.
 3. Forward-fills missing exchange rates.
 
-```python
-exchange_rates["EUR_to_USD"] = (
-    exchange_rates["EUR_to_USD"].ffill()
-)
-```
+exchange_rates["EUR_to_USD"] = (exchange_rates["EUR_to_USD"].ffill())
 
 The transactions are then merged with the exchange-rate data using the transaction date.
-
 ---
 
 ### Phase 4 — Active User Reconciliation
@@ -129,22 +117,13 @@ This ensures that the final financial dataset contains only transactions associa
 
 USD revenue is calculated using:
 
-```python
-df_final["USD_Revenue"] = (
-    df_final["Euro_Value"] *
-    df_final["EUR_to_USD"]
-)
-```
+df_final["USD_Revenue"] = (df_final["Euro_Value"] * df_final["EUR_to_USD"])
 
-The final dataset is then validated and exported as:
-
-```text
-power_bi_ready_dataset.csv
-```
+The final dataset is then validated and exported as: power_bi_ready_dataset.csv
 
 ---
 
-# 🛠️ Technologies Used
+#  Technologies Used
 
 | Technology          | Purpose                                    |
 | ------------------- | ------------------------------------------ |
@@ -160,7 +139,7 @@ power_bi_ready_dataset.csv
 
 ---
 
-# 📊 Project Results
+#  Project Results
 
 The completed pipeline produced:
 
@@ -181,7 +160,7 @@ The completed pipeline produced:
 
 ---
 
-# 📈 Dashboard
+#  Dashboard
 
 The resulting dataset is designed for a Power BI Financial Audit Dashboard.
 
@@ -191,20 +170,11 @@ The resulting dataset is designed for a Power BI Financial Audit Dashboard.
 
 A DAX measure can be created using:
 
-```DAX
-Total USD Revenue =
-SUM('power_bi_ready_dataset'[USD_Revenue])
-```
+Total USD Revenue = SUM('power_bi_ready_dataset'[USD_Revenue])
 
-#### 2. Revenue Trend
+#### 2. Revenue Trend A line chart displays:
 
-A line chart displays:
-
-```text
-Monthly Revenue
-```
-
-across the 2023 reporting period.
+Monthly Revenue across the 2023 reporting period.
 
 #### 3. Top 5 Customers
 
@@ -214,32 +184,25 @@ A bar chart identifies the five customers with the highest total USD revenue.
 
 The dashboard can include a date slicer allowing users to analyze:
 
-```text
 Year
 Quarter
 Month
 Date
-```
 
 ---
 
-# 📷 Dashboard Screenshot
+#  Dashboard Screenshot
 
 <img width="1128" height="840" alt="Screenshot of powerbi dashboard" src="https://github.com/user-attachments/assets/028321ba-6f8f-4874-a636-c82aae7706d5" />
 
 ---
 
-# 📦 Output
+#  Output
 
-The primary output is:
-
-```text
-/power_bi_ready_dataset.csv
-```
+The primary output is: /power_bi_ready_dataset.csv
 
 The dataset contains:
 
-```text
 Date
 User_ID
 name
@@ -247,53 +210,43 @@ Product_ID
 Euro_Value
 EUR_to_USD
 USD_Revenue
-```
 
 This dataset can be imported directly into Power BI.
 
 ---
 
-# 🔍 Data Validation
+#  Data Validation
 
 The pipeline performs several validation checks:
 
 ### Missing Values
 
-```python
 df_final.isna().sum()
-```
 
 ### Duplicate Transactions
 
-```python
+
 df_final.duplicated(
-    subset=[
-        "Date",
-        "User_ID",
-        "Product_ID",
-        "Euro_Value"
-    ]
-).sum()
-```
+    subset=["Date","User_ID","Product_ID","Euro_Value"]
+    ).sum()
+
 
 ### Revenue Validation
 
-```python
 df_final["USD_Revenue"].sum()
-```
+
 
 ### Date Range
 
-```python
 df_final["Date"].min()
 df_final["Date"].max()
-```
+
 
 These checks help ensure that the final dataset is suitable for financial reporting.
 
 ---
 
-# ⚡ Performance Approach
+#  Performance Approach
 
 The project avoids row-by-row Pandas loops.
 
@@ -310,7 +263,7 @@ This approach allows the pipeline to process the large server-log dataset effici
 
 ---
 
-# 📋 Key Business Insights
+#  Key Business Insights
 
 The final analysis supports two primary business questions:
 
@@ -326,7 +279,7 @@ These outputs can be used to support financial review, customer-value analysis a
 
 ---
 
-# 📄 Project Documentation
+#  Project Documentation
 
 The repository also contains a detailed project report covering:
 
@@ -340,15 +293,7 @@ The repository also contains a detailed project report covering:
 
 ---
 
-# 👨‍💻 Author
-
-**Anand Kumar Mishra**
-
-Data Analyst | SQL | Python | Power BI | Data Engineering
-
----
-
-## ⭐ Project Highlights
+##  Project Highlights
 
 * Advanced SQL window functions
 * Unstructured data extraction using Regex
